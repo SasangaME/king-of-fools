@@ -3,6 +3,7 @@
 pragma solidity ^0.8.9;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "hardhat/console.sol";
 
 contract KingOfTheFools {
     mapping(address => Balance) public balances;
@@ -12,6 +13,7 @@ contract KingOfTheFools {
     /// @dev dev env only for hardhat and ganache, eth -> usdc rate
     uint256 exchangeRate;
     IERC20 public USDC;
+    uint256 private noOfTx;
 
     struct Balance {
         uint256 ethAmount;
@@ -23,6 +25,7 @@ contract KingOfTheFools {
     constructor(address _usdc) {
         exchangeRate = 10;
         USDC = IERC20(_usdc);
+        prevAddress = address(0);
     }
 
     function depositEth() external payable {
@@ -32,6 +35,7 @@ contract KingOfTheFools {
         } else {
             balances[msg.sender].ethAmount += msg.value;
         }
+        noOfTx += 1;
         prevAddress = msg.sender;
         isPrevUSDC = false;
         prevAmount = msg.value;
@@ -46,7 +50,11 @@ contract KingOfTheFools {
         bool isFool = _checkFool(true, _amount);
         if (isFool) {
             USDC.transferFrom(msg.sender, prevAddress, _amount);
-        } else {}
+        } else {
+            USDC.transferFrom(msg.sender, address(this), _amount);
+            balances[msg.sender].USDCAmount += _amount;
+        }
+        noOfTx += 1;
         prevAddress = msg.sender;
         isPrevUSDC = true;
         prevAmount = _amount;
@@ -78,6 +86,10 @@ contract KingOfTheFools {
         view
         returns (bool isFool)
     {
+        require(
+            noOfTx == 0 || prevAddress != address(0),
+            "prev address is address(0)"
+        );
         // check 04 scenarios
         uint256 notFoolAmount = 0;
         // 01 current ETH & prev ETH or 02 current USDC & prev USDC
