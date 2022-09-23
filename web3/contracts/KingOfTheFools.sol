@@ -28,6 +28,7 @@ contract KingOfTheFools {
         prevAddress = address(0);
     }
 
+    /// @dev deposit ETH to the contract
     function depositEth() external payable {
         bool isFool = _checkFool(false, msg.value);
         if (isFool) {
@@ -42,6 +43,8 @@ contract KingOfTheFools {
         emit Deposit(msg.sender, false, msg.value, isFool);
     }
 
+    /// @dev deposit USDC to the contract
+    /// @param _amount USDC amount to be depositted
     function depositUSDC(uint256 _amount) external {
         uint256 usdcBalance = USDC.balanceOf(msg.sender);
         require(usdcBalance >= _amount, "not enough balance");

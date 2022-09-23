@@ -54,8 +54,8 @@ describe("King of the Fools", function () {
 
         const mintAmount1 = ethers.utils.parseUnits("1000", 6);
         const mintAmount2 = ethers.utils.parseUnits("3000", 6);
-        await usdc.mint(user1.address, mintAmount1);
-        await usdc.mint(user2.address, mintAmount2);
+        await usdc.mint(mintAmount1);
+        await usdc.mint(mintAmount2);
 
         const balance1 = await usdc.balanceOf(user1.address);
         const balance2 = await usdc.balanceOf(user2.address);
@@ -77,8 +77,8 @@ describe("King of the Fools", function () {
 
         const mintAmount1 = ethers.utils.parseUnits("1000", 6);
         const mintAmount2 = ethers.utils.parseUnits("1000", 6);
-        await usdc.mint(user1.address, mintAmount1);
-        await usdc.mint(user2.address, mintAmount2);
+        await usdc.mint(mintAmount1);
+        await usdc.mint(mintAmount2);
 
         const balance1 = await usdc.balanceOf(user1.address);
         const balance2 = await usdc.balanceOf(user2.address);
