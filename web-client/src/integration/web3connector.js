@@ -46,3 +46,32 @@ export async function depositEth(amount) {
         alert(err);
     }
 }
+
+export async function mintTokens() {
+    try {
+        const contract = getUSDCContract();
+        const usdcAmount = ethers.utils.parseEther("1000");
+        await contract.mint(usdcAmount);
+        alert("tokens minted successfully");
+    } catch (err) {
+        alert(err);
+    }
+}
+
+export async function depositUSDC(amount) {
+    const usdc = getUSDCContract();
+    const kof = getKofContract();
+
+    const usdcBalance = ethers.utils.parseEther(amount.toString());
+    await usdc.approve(addresses.kof, usdcBalance);
+    const tx = await kof.depositUSDC(usdcBalance);
+    const reciept = await tx.wait();
+    const event = await reciept.events[reciept.events.length - 1].args;
+    console.log(event);
+    const isFool = event.isFool;
+    if (isFool) {
+        alert("new king of the fools detected.");
+    } else {
+        alert("amount deposited succefully");
+    }
+}

@@ -4,7 +4,7 @@ import {
     FormControl, FormHelperText, TextField,
     Button
 } from '@mui/material'
-import { depositEth } from '../integration/web3connector';
+import { depositEth, depositUSDC } from '../integration/web3connector';
 
 const Deposit = () => {
     const [amount, setAmount] = useState(0);
@@ -17,8 +17,11 @@ const Deposit = () => {
         })();
     }
 
-    const depositUSDC = () => {
-        alert("USDC: " + amount);
+    const depositTokens = () => {
+        (async () => {
+            await depositUSDC(amount);
+            setAmount(0);
+        })();
     }
 
     return (
@@ -42,7 +45,7 @@ const Deposit = () => {
                 </FormControl> &nbsp;  &nbsp; < br /> <br />
                 <Button variant="contained" color="primary" type='submit'>Deposit ETH</Button>
                 &nbsp; &nbsp;
-                <Button variant="contained" color="primary" onClick={depositUSDC}>Deposit USDC</Button>
+                <Button variant="contained" color="primary" onClick={depositTokens}>Deposit USDC</Button>
             </form >
         </div >
     )

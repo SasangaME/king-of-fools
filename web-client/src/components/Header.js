@@ -7,12 +7,14 @@ import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 // import MenuIcon from '@mui/icons-material/Menu';
 import './Header.css';
-import { connectAccounts } from "../integration/web3connector";
+import { connectAccounts, mintTokens } from "../integration/web3connector";
 
 const Header = () => {
 
-    const mintTokens = () => {
-        alert("minting");
+    const mint = () => {
+        (async () => {
+            await mintTokens();
+        })();
     }
 
     const connectWallet = () => {
@@ -36,7 +38,7 @@ const Header = () => {
                     <Typography variant="h4" component="div" sx={{ flexGrow: 1 }}>
                         King of the Fools
                     </Typography>
-                    <Button color="inherit" onClick={mintTokens}>Mint Tokens</Button>
+                    <Button color="inherit" onClick={mint}>Mint Tokens</Button>
                     <Button color="inherit" onClick={connectWallet}>Connect Wallet</Button>
                 </Toolbar>
             </AppBar>

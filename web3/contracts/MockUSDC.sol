@@ -11,7 +11,7 @@ contract MockUSDC is ERC20 {
         owner = msg.sender;
     }
 
-    function mint(address _account, uint256 _amount) external {
-        _mint(_account, _amount);
+    function mint(uint256 _amount) external {
+        _mint(msg.sender, _amount);
     }
 }
